@@ -31,7 +31,8 @@ def plot_hist_length(data, bins, level):
     # Set the xaxis's tick labels to be formatted with 1 decimal place
     ax.xaxis.set_major_formatter(FormatStrFormatter('%0.1f'))
     ax.set_xticklabels(labels=bins, rotation=70)
-    plt.show()
+    #plt.show()
+    plt.savefig(f'plot_hist_tweet_{level}_count.png')
 
 
 def plot_topn_words(data, n):
@@ -66,7 +67,8 @@ def plot_topn_words(data, n):
         ax.set_ylabel(f"{'non-relevant' if i==0 else 'not-sure'} tweets")
         ax.set_xlabel(f'top {n} words')
     fig.align_labels()
-    plt.show()
+    #plt.show()
+    plt.savefig('plot_topn_words_by_class.png')
 
 
 # taking cue from Emmanuel Ameisen's notebook
@@ -97,4 +99,5 @@ def plot_confusion_matrix(x_test, y_test, saved_model, normalize=False):
     #plt.tight_layout()
     plt.ylabel('True label', fontsize=20)
     plt.xlabel('Predicted label', fontsize=20)
-    plt.show()
+    #plt.show()
+    plt.savefig('plot_confusion_matrix.png')
