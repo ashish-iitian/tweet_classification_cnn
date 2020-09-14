@@ -1,4 +1,4 @@
-#https://github.com/hundredblocks/concrete_NLP_tutorial/blob/master/NLP_notebook.ipynb
+# https://github.com/hundredblocks/concrete_NLP_tutorial/blob/master/NLP_notebook.ipynb
 from keras.layers import Dense, Input, Flatten, Dropout, Concatenate
 from keras.layers import Conv1D, MaxPooling1D, Embedding
 from keras.layers import LSTM, Bidirectional

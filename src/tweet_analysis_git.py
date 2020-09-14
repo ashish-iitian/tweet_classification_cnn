@@ -55,7 +55,7 @@ def train_model(src_df):
     x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=7)
     
     model = conv.ConvNet(embeddings, MAX_SEQUENCE_LENGTH, uniq_cnt, EMBEDDING_DIM, labels.shape[-1]) # load compiled model from conv.py
-    callbacks = [keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)]
+    callbacks = [keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)] # restore_best_weights=True
     model.fit(x_train, y_train, validation_data=(x_val, y_val), epochs=15, batch_size=128, 
     	callbacks=callbacks, workers=cores-1, use_multiprocessing=True)
     test_results = model.evaluate(x_test, y_test, batch_size=128, workers=cores-1, use_multiprocessing=True)
@@ -82,7 +82,7 @@ def main():
         return EXITCODE_FAILED
 
     try:
-        #checkout_data(src_df)
+        checkout_data(src_df)
         train_model(src_df)
         return EXITCODE_SUCCESS
     except Exception as ex:

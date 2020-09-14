@@ -14,7 +14,7 @@ path_to_model = "../../../stanford-postagger-full-2020-08-06/models/english-left
 st = StanfordPOSTagger(path_to_model, path_to_jar, encoding='utf8', java_options='-Xmx10G')
 lm = WordNetLemmatizer()
 
-# https://stackoverflow.com/questions/5364493/lemmatizing-pos-tagged-words-with-nltk
+
 def wordnet_pos_code(tag):
     if tag.startswith('V'):
         return wn.VERB
@@ -43,7 +43,7 @@ def prep_and_pkl(data, st, lm):
 
 
 def clean_text(ls):
-    return [re.sub(r"(\W)", "", x).lower() for x in ls] #handle any embedded non-alphanumeric chars in the token
+    return [re.sub(r"(\W)", "", x).lower() for x in ls] # handle any embedded non-alphanumeric chars in the token
 
 
 def get_word2vec(src_df, w2v_model, max_seq_len, dim_size):
@@ -62,7 +62,7 @@ def get_word2vec(src_df, w2v_model, max_seq_len, dim_size):
     cnn_data = cnn_data[indices]
     labels = labels[indices]
 
-    embedding_weights = np.zeros((len(word_index)+1, EMBEDDING_DIM)) # for CNN
+    embedding_weights = np.zeros((len(word_index)+1, EMBEDDING_DIM))
     for word,index in word_index.items():
         embedding_weights[index,:] = w2v_model[word] if w2v_model.wv.__contains__(word) else np.random.rand(EMBEDDING_DIM)
     #print(embedding_weights.shape)
