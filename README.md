@@ -12,7 +12,15 @@ For my project, once I figured out how I would like to preprocess and clean the 
 ### Exploratory Data Analysis
 Once the data is read, I conducted some preliminary checks to see what its composition is and what can be learned about the features at hand. In this case, it meant checking out some tweets and their labels in dataset, getting a sense of what/how text normalization should be applied. I looked for any NULL columns (there were none unsurprisingly) etc. before trying some visualization using **Matplotlib**.
 
-I plotted some graphs to see how long raw tweets are (in terms of word count and character count), what are some popular words that appear in tweets classified as "disaster"-related or other categories etc. I used a histogram to see the former and bar plots for the latter to see the "important" words juxtaposed.
+I plotted some histograms to see how long raw tweets are in terms of word count:
+
+![word count](plots/plot_hist_tweet_word_count.png)
+
+and character count:
+
+![character count](plots/plot_hist_tweet_char_count.png).
+
+I also created bar plots to see what some popular words are that appear in tweets classified as "disaster"-related or other categories etc., juxtaposed for the ease of comparison ![here](plots/plot_topn_words_by_class.png).
 
 ### Cleaning and Tagging The Data
 Cleaning and normalizing the tweets took the longest time (as expected). Given that people these days in their online posts use a lot on acronyms and new urban slangs, text clean-up/normalization can be a challenging task. I tried a few approaches (a **naive Python** approach, then an advanced Pythonic way using **regex**, trying out **nltk** and its methods) before settling in on the one used in this project. 
@@ -45,7 +53,7 @@ After taking care of **feature engineering**, I define our **Convolutional Neura
 
 I also leverage **keras.callbacks** that provides us additional control over the model training. Finally, I use sklearn's **train_test_split** method to split our text-embedded matrix into a train/test dataset, and further splitting the training dataset to obtain validation data. I provide the validation dataset to the keras model being trained for periodic evaluation. 
 
-Next, I evaluated the model over the test dataset. It gave me an accuracy of around 78%. I also saved the trained model so it could be loaded again to generate the **confusion matrix** (since Keras doesn't allow model object to be passed to a function, I saved the model as h5 object).
+Next, I evaluated the model over the test dataset. It gave me an accuracy of around 78%. I also saved the trained model so it could be loaded again to generate the **confusion matrix** (since Keras doesn't allow model object to be passed to a function, I saved the model as h5 object). The confusion matrix I obtained looked like ![this](plots/plot_confusion_matrix.png).
 
 ## Next Steps
 - Trying different parameters for word2vec model training (*alpha, min_alpha, negative*)
