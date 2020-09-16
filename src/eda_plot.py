@@ -32,7 +32,7 @@ def plot_hist_length(data, bins, level):
     ax.xaxis.set_major_formatter(FormatStrFormatter('%0.1f'))
     ax.set_xticklabels(labels=bins, rotation=70)
     #plt.show()
-    plt.savefig(f'plot_hist_tweet_{level}_count.png')
+    plt.savefig(f'plot_hist_tweet_{level}_count.png', bbox_inches='tight')
 
 
 def plot_topn_words(data, n):
@@ -68,7 +68,7 @@ def plot_topn_words(data, n):
         ax.set_xlabel(f'top {n} words')
     fig.align_labels()
     #plt.show()
-    plt.savefig('plot_topn_words_by_class.png')
+    plt.savefig('plot_topn_words_by_class.png', bbox_inches='tight')
 
 
 # taking cue from Emmanuel Ameisen's notebook
@@ -100,4 +100,4 @@ def plot_confusion_matrix(x_test, y_test, saved_model, normalize=False):
     plt.ylabel('True label', fontsize=20)
     plt.xlabel('Predicted label', fontsize=20)
     #plt.show()
-    plt.savefig('plot_confusion_matrix.png')
+    plt.savefig('plot_confusion_matrix.png', bbox_inches='tight')
