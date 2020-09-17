@@ -10,7 +10,21 @@ In this project, I use a dataset likely made available by [Crowdflower](https://
 For my project, once I figured out how I would like to preprocess and clean the data (details in next section), I decided to pickle and save the data to faciliate a faster model development/training process. Currently, the main script ([tweet_analysis_git.py](https://github.com/ashish-iitian/tweet_classification_cnn/blob/master/src/tweet_analysis_git.py)) accepts a boolean argument ("from_pkl") to indicate whether we want to use the pickled data or we prefer to read the csv input file that'd then undergo preprocessing.
 
 ### Exploratory Data Analysis
-Once the data is read, I conducted some preliminary checks to see what its composition is and what can be learned about the features at hand. In this case, it meant checking out some tweets and their labels in dataset, getting a sense of what/how text normalization should be applied. I looked for any NULL columns (there were none unsurprisingly) etc. before trying some visualization using **Matplotlib**.
+Once the data is read, I conducted some preliminary checks to see what its composition is and what can be learned about the features at hand. In this case, it meant checking out some tweets and their labels in dataset, getting a sense of what/how text normalization should be applied. 
+
+Before trying some visualization using **Matplotlib**, I looked for any NULL columns (there were none unsurprisingly) etc. 
+```df.info()
+Data columns (total 4 columns):                                                                                                                               
+ #   Column          Non-Null Count  Dtype                                                                                                                    
+---  ------          --------------  -----                                                                                                                    
+ 0   text            10876 non-null  object                                                                                                                   
+ 1   class_label     10876 non-null  int64                                                                                                                    
+ 2   tokenized       10876 non-null  object                                                                                                                   
+ 3   tokenized_text  10876 non-null  string                                                                                                                   
+dtypes: int64(1), object(2), string(1)                                                                                                                        
+memory usage: 424.8+ KB
+```
+Here is what few original tweets look like in dataset - ![raw tweet](plots/original_text.png)
 
 I plotted some histograms to see how long raw tweets are in terms of word count:
 
@@ -37,6 +51,9 @@ With StanfordPOSTagger, I tried POS-Tagging for over tokenized text and passing 
 
 Finally, I applied **lemmatization** to the tokens using the POS tag so I have the normalized tokens from the raw tweets. This processed data was next saved into a pickle file for faster model development/training. 
 
+Here is what the tweets look like after clean-up and normalization - ![normalized tweet](plots/tokenized.png)
+Compare it with the earlier screenshot showing raw tweets to see how clean-up and normalization of words to generate tokens works.
+
 After text normalization and right before model training in the main script, I plotted the curves from the EDA stage again to see if things make sense and to verify important information is not being lost.
 
 ### Feature Engineering & Model Training
@@ -49,7 +66,9 @@ However for this project, I chose to use **Word2Vec** class from **gensim** pack
 After the word2vec model is trained, I extract *token/word vectors* from it for the words in normalized and tokenized tweets and then construct our matrix of **embedding_weights** which is also **padded** so that each tweet can be represented by a vector/matrix of the same dimensionality. 
 
 #### Model Training
-After taking care of **feature engineering**, I define our **Convolutional Neural Network** model. We try 3 different filter sizes and use **max-pooling** to reduce dimensionality of feature map. We also use **dropout** techniques to make our model resilient to overfitting. We specify the **loss function** to minimize and the **optimizer** to use, alongside the metric to measure the model's performance.
+After taking care of **feature engineering**, I define our **Convolutional Neural Network** model. We try 3 different filter sizes and use **max-pooling** to reduce dimensionality of feature map. We also use **dropout** techniques to make our model resilient to overfitting. We specify the **loss function** to minimize and the **optimizer** to use, alongside the metric to measure the model's performance. 
+
+Here is what the keras CNN model looks like ![:](plots/plot_cnn.png)
 
 I also leverage **keras.callbacks** that provides us additional control over the model training. Finally, I use sklearn's **train_test_split** method to split our text-embedded matrix into a train/test dataset, and further splitting the training dataset to obtain validation data. I provide the validation dataset to the keras model being trained for periodic evaluation. 
 
