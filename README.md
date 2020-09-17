@@ -24,8 +24,14 @@ Data columns (total 4 columns):
 dtypes: int64(1), object(2), string(1)                                                                                                                        
 memory usage: 424.8+ KB
 ```
-Here is what few original tweets look like in dataset - ![raw tweet](plots/original_text.png)
-
+Here is what few original tweets look like in dataset (text, class_label)
+```
+text
+lets see how good you are at soccer when you're bleeding out yo face,0
+http://t.co/ACHBbiFQrQ : Big Papi with a great welcoming to The Show: #Crushed �_ http://t.co/ceBFBONcHD http://t.co/mUncapudDc,0
+"City implores motorists not to speed after more reports of animal fatalities near nature reserves -&gt; http://t.co/hiKF8Mkjsn",1
+@MikeParrActor omg I cant believe they killed off ross he was my favourite character with aaron @DannyBMiller im devastated.  Top acting ??,0
+```
 I plotted some histograms to see how long raw tweets are in terms of word count:
 
 ![word count](plots/plot_hist_tweet_word_count.png)
@@ -51,9 +57,14 @@ With StanfordPOSTagger, I tried POS-Tagging for over tokenized text and passing 
 
 Finally, I applied **lemmatization** to the tokens using the POS tag so I have the normalized tokens from the raw tweets. This processed data was next saved into a pickle file for faster model development/training. 
 
-Here is what the tweets look like after clean-up and normalization - ![normalized tweet](plots/tokenized.png)
-Compare it with the earlier screenshot showing raw tweets to see how clean-up and normalization of words to generate tokens works.
-
+Here is what the tokens from the tweets look like after clean-up and normalization. Compare it with the earlier screenshot showing raw tweets to see how clean-up and normalization of words generate tokens.
+```
+tokenized                                                
+[let, see, good, soccer, bleeding, yo, face]                                                
+[big, papi, great, welcoming, the, show, crushed, ]                                                 
+[city, implore, motorist, speed, report, animal, fatality, near, nature, reserve, gt]                                               
+[mikeparractor, omg, i, cant, believe, kill, ross, favourite, character, aaron, dannybmiller, im, devastated, top, act, ] 
+```
 After text normalization and right before model training in the main script, I plotted the curves from the EDA stage again to see if things make sense and to verify important information is not being lost.
 
 ### Feature Engineering & Model Training
