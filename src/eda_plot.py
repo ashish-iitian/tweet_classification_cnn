@@ -7,6 +7,7 @@ import itertools
 from statistics import mean, median
 from sklearn.metrics import confusion_matrix
 from keras.models import load_model
+from keras.utils.vis_utils import plot_model
 import numpy as np
 
 
@@ -15,6 +16,8 @@ def exploration(src_df):
     print(src_df.describe(include='all'))
     for col in src_df.columns:
         print(src_df[col].value_counts(dropna=False))
+    print(src_df['original_text'].head())
+    print(src_df['tokenized'].head())
 
 
 def plot_hist_length(data, bins, level):
@@ -101,3 +104,8 @@ def plot_confusion_matrix(x_test, y_test, saved_model, normalize=False):
     plt.xlabel('Predicted label', fontsize=20)
     #plt.show()
     plt.savefig('plot_confusion_matrix.png', bbox_inches='tight')
+
+
+def plot_cnn(model, output_file):
+    # requires graphviz, pydot to be installed
+    plot_model(model, to_file=output_file, show_shapes=True, show_layer_names=True)

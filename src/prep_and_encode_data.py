@@ -4,7 +4,9 @@ from nltk.corpus import stopwords, wordnet as wn
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
-import string
+from datetime import datetime
+import pandas as pd
+import re, string
 import numpy as np
 
 
@@ -26,7 +28,7 @@ def wordnet_pos_code(tag):
         return wn.NOUN
 
 
-def prep_and_pkl(data, st, lm):
+def prep_and_pkl(data):
     #print(data.head())
     data.loc[:, 'text'] = data['text'].str.replace(r'http\S+', '').str.replace('@', 'at ').str.replace('#', '').apply(lambda x: re.sub(r'(\S)\1{2,}', r'\1', x))
     data['tokenized'] = st.tag_sents([x.split() for x in data.text.tolist()])
@@ -35,11 +37,12 @@ def prep_and_pkl(data, st, lm):
             .apply(lambda ls: [lm.lemmatize(x, wordnet_pos_code(y)) if y else lm.lemmatize(x) for x, y in ls])\
             .apply(clean_text)
 
-    dataf = data.drop(columns = ["text"])
-    dataf['text'] = dataf['tokenized'].apply(lambda ls: ' '.join(ls)).astype("string")
-    print(f"Dataframe has {len(dataf)} rows, processed in {(datetime.now() - start_time).seconds / 60: 0.1f} minutes.")
-    pd.to_pickle(dataf, f"data_tokenized.pkl")
-    return dataf
+    data['tokenized_text'] = data['tokenized'].apply(lambda ls: ' '.join(ls)).astype("string")
+    print(data.head())
+    data.rename(columns={"text": "original_text", "tokenized_text": "text"}) # renaming columns 
+    print(f"Dataframe has {len(data)} rows, processed in {(datetime.now() - start_time).seconds / 60: 0.1f} minutes.")
+    pd.to_pickle(data, f"data_tokenized.pkl")
+    return data
 
 
 def clean_text(ls):

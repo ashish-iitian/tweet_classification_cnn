@@ -55,6 +55,8 @@ def train_model(src_df):
     x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=7)
     
     model = conv.ConvNet(embeddings, MAX_SEQUENCE_LENGTH, uniq_cnt, EMBEDDING_DIM, labels.shape[-1]) # load compiled model from conv.py
+    eda_plot.plot_cnn(model, 'plot_cnn.png') # visualize the CNN model
+
     callbacks = [keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)] # restore_best_weights=True
     model.fit(x_train, y_train, validation_data=(x_val, y_val), epochs=15, batch_size=128, 
     	callbacks=callbacks, workers=cores-1, use_multiprocessing=True)
@@ -66,7 +68,7 @@ def train_model(src_df):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-from_pkl", default=False, help="use pickled data or csv file")
+    parser.add_argument("-from_pkl", default=False, help="use pickled data or csv file. Provide '-from_pkl True' to use pkl file.")
     cmd_args = parser.parse_args()
     from_pkl = cmd_args.from_pkl
     try:
